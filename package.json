@@ -5,6 +5,9 @@
   "repository": "https://github.com/ngocdu171/access-tracking.git",
   "author": "ngocdu <ngocdu171@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node-dev --respawn src/index.ts"
+  },
   "dependencies": {
     "@trpc/server": "^10.4.3",
     "cors": "^2.8.5",
