@@ -1,15 +1,16 @@
 import express from "express";
+import cors from "cors";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { inferAsyncReturnType, initTRPC } from "@trpc/server";
 
 const createContext = ({
   req,
   res,
-}: trpcExpress.CreateExpressContextOptions) => ({});
+}: trpcExpress.CreateExpressContextOptions) => ({req, res});
 
-// export type Context = inferAsyncReturnType<typeof createContext>;
-// const t = initTRPC.context<Context>().create();
-const t = initTRPC.create();
+export type Context = inferAsyncReturnType<typeof createContext>;
+const t = initTRPC.context<Context>().create();
+// const t = initTRPC.create();
 
 const router = t.router;
 const publicProcedure = t.procedure;
@@ -29,18 +30,19 @@ const users = [
     },
 ]
 
-const appRouter = t.router({
+const appRouter = router({
   hello: publicProcedure.query(() => 'Hello World!'),
-  getUsers: publicProcedure.query(() => {
-    console.log("gia tri tra ve roi nha!");
+  getUsers: publicProcedure.query(async () => {
+    // console.log("gia tri tra ve roi nha!");
     return {
-        userArrays: users
+        userArrays: await users
     }
-  })
+  }),
 });
 
 const app = express();
 const port = 4000;
+app.use(cors({}));
 
 app.use(
   "/trpc",
