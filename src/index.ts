@@ -1,3 +1,4 @@
+require("dotenv").config();
 import express from "express";
 import cors from "cors";
 import * as trpcExpress from "@trpc/server/adapters/express";
@@ -59,8 +60,8 @@ app.use(cors({}));
 // }));
 
 ////////CONNECT TO MONGODB///////////////
-const mongoUrl = `mongodb+srv://BrotherD:conmemay7@cluster0.z9fbk4y.mongodb.net/?retryWrites=true&w=majority`
-mongoose.connect(mongoUrl).then(() => console.log("MongoDB Connected") );
+// const mongoUrl = `mongodb+srv://BrotherD:conmemay7@cluster0.z9fbk4y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+mongoose.connect(process.env.MONGO_URL as string).then(() => console.log("MongoDB Connected") );
 
 app.use(
   "/trpc",
